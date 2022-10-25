@@ -1,15 +1,17 @@
 Solution for p2a
 
-Better grouping for example given by p2a:
+Better grouping than example given by p2a:
 
 - 1st group: users 0 and 1
 - 2nd group: user 3 and 4
 - 3rd group: user 2
 
-This gives a grand total of:
+This gives a total of:
 
 - 1st group: R[0,1]+R[1,0] = 100
 - 2nd group: R[3,4] +R[4,3]= 125
 - 3rd group: 0
 
-100 + 125 = 225 which is a better grouping than example (130).
+100 + 125 = 225 
+
+which is a better grouping than example (130).
