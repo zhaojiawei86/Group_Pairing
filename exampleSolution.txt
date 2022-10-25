@@ -1,13 +1,15 @@
-There are better grouping ways. One better way to group the users is to put:
+Solution for p2a
 
-- users 0 and 1 in the first group
-- user 2 in the second group, and
-- user 3 and user 4 in the last group.
+Better grouping for example given by p2a:
 
-This group has a *total ranking* of:
+- 1st group: users 0 and 1
+- 2nd group: user 3 and 4
+- 3rd group: user 2
 
-- R[0,1]+R[1,0] = 100, for the first group. 
-- 0 for the second group
-- R[3,4] +R[4,3]= 125 for the last group.
+This gives a grand total of:
 
-This gives a total of 225. 
+- 1st group: R[0,1]+R[1,0] = 100
+- 2nd group: R[3,4] +R[4,3]= 125
+- 3rd group: 0
+
+100 + 125 = 225 which is a better grouping than example (130).
