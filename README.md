@@ -1,5 +1,13 @@
 # Group_Pairing
-Group 8: Jiawei Zhao & Yiqin Zhang
+Group 8: Jiawei Zhao & Yiqin Zhang  
+  
+We got our solution based on greedy algorithm.  
+1. Get all combinations within group size and get the sum ranking among these users.
+2. Create map such as: key (array of combination) => value (sum ranking).
+3. Sort map by value in a descending order.
+4. Use greedy algorithm, get the maximum sum ranking group firstly, and delete all combinations which include users in this group from the map.
+5. Repeat step4, get group with maximum sum ranking in the updated map.
+6. Stop until number of left users less than group size, all the left users will be included in the last group.
 
 ## Sign in page
 <img width="300" alt="image" src="https://user-images.githubusercontent.com/59852184/198175073-60bd2120-371b-48ec-9802-b5f892d89cf6.png">  
