@@ -1,5 +1,5 @@
 # Group_Pairing
-Jiawei Zhao & Yiqin Zhang
+Group 8: Jiawei Zhao & Yiqin Zhang
 
 ## Sign in page
 <img width="300" alt="image" src="https://user-images.githubusercontent.com/59852184/198175073-60bd2120-371b-48ec-9802-b5f892d89cf6.png">  
