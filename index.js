@@ -16,76 +16,57 @@
 
 /**
  * When click creat button, get parameters from input.
- * n = Number of users.
- * Create table with n * n.
+ * After input all parameters, create table with n * n.
+ * Otherwise alert.
  */
-// const maxScore = document.getElementById(maxRank).value;
-// const sumScore = $("sumRank").value;
-
  $("creat").onclick = function () {
-  $("pair_page").style.display = "none";
-  $("rank_page").style.display = "block";
-
   let userCnt = $("numOfUser").value;
-  var rValue = userCnt;
-  var cValue = userCnt;
-  var oTable = create("table"); 
-  oTable.border = 1;
-  var thead = create('thead');
-  oTable.appendChild(thead);
-  thead.appendChild(create("th")).
-  appendChild(document.createTextNode(" " ));
-  for (var i =0; i<cValue; i++) {
-    thead.appendChild(create("th")).
-    appendChild(document.createTextNode("User" + i ));
+  let groupSize = $("groupSize").value;
+  let maxRank = $("maxRank").value;
+  let sumRank = $("sumRank").value;
+  if (userCnt == "" || groupSize == "" || maxRank == "" || sumRank == "") {
+    alert("Please fill out all parameters.");
   }
-  for (var i = 0; i < rValue; i++) {
-    var oTr = create("tr");
-    var text = create('td');
-    oTr.appendChild(text.appendChild(document.createTextNode("User" + i )));
-    for (var j = 0; j < cValue; j++) {
-      var oTd = create('td');
-      oTd.classList.add("input");
-      var input = create('input');
-      input.type = "number";
-      // input.value = 0;
-      if (i == j){
-        input.disabled = true;
-        input.value = 0;
-      }
-      oTd.appendChild(input);
-      oTr.appendChild(oTd);
-    }
-    oTr.appendChild(oTd); 
-    oTable.appendChild(oTr); 
-    
+  else {
+    $("pair_page").style.display = "none";
+    $("rank_page").style.display = "block";
+    let oTable = creatTable(userCnt);
+    $("box").appendChild(oTable); 
   }
-  $("box").appendChild(oTable); 
-
 };
 
 /**
  * When click submit button, store ranking info into redis
+ * Each ranking should be in range from 0 to maxRank.
+ * All ranking from a user should be sum to sumRank.
+ * Otherwise alert and hold.
  */
 $("submit").onclick = function () {
-  submit();
-  alert("Successfully submit. please click 'Get Result' to check the group ranking.");
+  let maxRank = $("maxRank").value;
+  let sumRank = $("sumRank").value;
+  if (!isValidTable ()) {
+    alert("Each ranking should be in a range from 0 to " +  maxRank + ";\n" + 
+    "Or for any user, the total ranking should be up to " + sumRank + ".");
+  }
+  else {
+    submit();
+    document.getElementById("getResult").disabled = false;
+    alert("Successfully submit. please click 'Get Result' to check the group ranking.");
+  }
 }
-
 
 /**
  * When click getResult button, get the final ranking result.
  */
  $("getResult").onclick = function () {
+  $("rank_page").style.display = "none";
+  $("response_page").style.display = "block";
   if ($("table1") === null) {
     alert("Please submit your ranking info.");
   }
   else {
     // window.location.href='findGroupings.html';
-    // let map = getMap();
-    // console.log(map);
     const res = findGroup(getMap());
-    // console.log("show result ranking!!!!");
     let result = 'Total ranking: ' + res[0] + '\n';
     result += 'Group pairing result: ' + '\n';
     for (var i = 0; i < res[1].length; i++) {
@@ -124,7 +105,7 @@ function create(tagName) {
 function setCommand(message) {
   let salt = getRandomString(20);
   let strHash = md5(salt + $('password').value);
-  // let strHash = md5(salt + "A9774149D3326");
+  // let strHash = md5(salt + "A9774149D3326"); // Used to simplify test.
   let url = "https://agile.bu.edu/ec500_scripts/redis.php?" + "salt=" + salt + "&hash=" + strHash + "&message=" + message;
   return url;
 }
@@ -347,32 +328,96 @@ function md5(string) {
  * Get the matrix of rank info
  * Store the matrix into redis server
  */
-
 function submit() {
   var tables = document.getElementsByTagName("table");
-  var maxScore = $("maxRank").value;
-  var sumScore = $("sumRank").value;
   for (var i = 0; i < tables.length; i++) {
     var table = tables[i];
     tableId = "table" + (i + 1);
     table.setAttribute("id", tableId);
 
     for (var r = 0, n = table.rows.length; r < n; r++) {
-      var rowSum = 0;
       for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
         table.rows[r].cells[c].setAttribute("id", "cell");
         let cellValue = table.rows[r].cells[c].childNodes[0].value;
-        if(cellValue > maxScore){
-          table.rows[r].cells[c].style.backgroundColor = "#ffa500";
-        }
-        rowSum += +cellValue;
         setMatrix(r,c,cellValue);
-      }
-      if(rowSum !=sumScore){
-        alert("Row" + r + " ranking dees not sum  up to SumRank!");
       }
     }
   }
+}
+
+/**
+ * Create and show a table on page.
+ * @param {*} userCnt Read from page.
+ * @returns a table with userCnt * userCnt matrix.
+ */
+function creatTable(userCnt) {
+  var rValue = userCnt;
+  var cValue = userCnt;
+  var oTable = create("table"); 
+  oTable.border = 1;
+  var thead = create('thead');
+  oTable.appendChild(thead);
+  thead.appendChild(create("th")).
+  appendChild(document.createTextNode(" " ));
+  for (var i =0; i<cValue; i++) {
+    thead.appendChild(create("th")).
+    appendChild(document.createTextNode("User" + i ));
+  }
+  for (var i = 0; i < rValue; i++) {
+    var oTr = create("tr");
+    var text = create('td');
+    oTr.appendChild(text.appendChild(document.createTextNode("User" + i )));
+    for (var j = 0; j < cValue; j++) {
+      var oTd = create('td');
+      oTd.classList.add("input");
+      var input = create('input');
+      input.type = "number";
+      input.value = 0;
+      if (i == j){
+        input.disabled = true;
+      }
+      oTd.appendChild(input);
+      oTr.appendChild(oTd);
+    }
+    oTr.appendChild(oTd); 
+    oTable.appendChild(oTr); 
+  }
+  return oTable;
+}
+
+/**
+ * Return true if all rankings or sum of rankings meet the requirments in table.
+ * Otherwise return false.
+ * @returns 
+ */
+function isValidTable() {
+  var tables = document.getElementsByTagName("table");
+  let maxRank = $("maxRank").value;
+  let sumRank = $("sumRank").value;
+  let sum = 0;
+  for (var i = 0; i < tables.length; i++) {
+    var table = tables[i];
+    tableId = "table" + (i + 1);
+    table.setAttribute("id", tableId);
+
+    for (var r = 0, n = table.rows.length; r < n; r++) {
+      for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+        table.rows[r].cells[c].setAttribute("id", "cell");
+        let cellValue = table.rows[r].cells[c].childNodes[0].value;
+        cellValue = +cellValue;
+        if (cellValue < 0 || cellValue > maxRank) {
+          return false;
+        }
+        sum = sum + cellValue;
+        console.log("r:" + r + ' C:' + c + " cell:" + cellValue +" Sum:" +sum);
+      }
+      if (sum != sumRank) {
+        return false;
+      }
+      sum = 0;
+    }
+  }
+  return true;
 }
 
 /**
@@ -445,7 +490,6 @@ function rankMatrix(){
       rank_matrix[i][j] = getCellValue(i, j) + getCellValue(j, i);
     }
   }
-  // console.log("pair ranking:" + rank_matrix);
   return rank_matrix;
 }
 
@@ -484,19 +528,20 @@ function getPermSum(perm, matrix) {
   return sum;
 }
 
-
 /**
- *
- * @param {*} map key is the group pairs, value is the sum of the pair
- * @returns the group solution and relative sum.
+ * Get the best combination of seperate groups by using greedy algorithm.
+ * @param {*} map with key(all possible combination in groupSize) => value (ranking sum in each combination)
+ * @returns Result of groups.
  */
 function findGroup(map){
   const size = $("numOfUser").value;
   const groupSize = $("groupSize").value;
-  //descending sort by map.values
   var mapSort = new Map([...map.entries()].sort((a, b) => {return b[1] - a[1]; }));
   let leftCnt = size;
-
+  let gruopNums = size;
+  if(groupSize >= 2){
+    gruopNums = Math.ceil(size / groupSize + 1)
+  }
   let group_result = []
   let delete_set = new Set();
   let total_tank = 0;
@@ -504,9 +549,10 @@ function findGroup(map){
   while (leftCnt >= groupSize){
     let max = 0;
     for (let [key, value] of mapSort){
-      // console.log('key: ' + key  + "\n");
+      console.log('key: ' + key  + "\n");
       var pass = false;
       for( let k of key){
+        console.log('k: ' + k + "\n");
         if (delete_set.has(k)){
           pass= true;
           break;
@@ -525,8 +571,8 @@ function findGroup(map){
       maxlist = []
     }
   }
-  //remaining users automatically form a gruop
-  if(leftCnt >= 0 && leftCnt < groupSize){
+
+  if(leftCnt > 0 && leftCnt < groupSize){
     var remain = []
     for(let i = 0; i < size; i++){
       if(!delete_set.has(i)){
@@ -535,6 +581,6 @@ function findGroup(map){
     }
     group_result.push([...remain]);
   }
-  // console.log(group_result);
+
   return [total_tank, group_result];
 }
