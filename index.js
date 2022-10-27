@@ -493,28 +493,20 @@ function getPermSum(perm, matrix) {
 function findGroup(map){
   const size = $("numOfUser").value;
   const groupSize = $("groupSize").value;
-  // const map = getMap();
   //descending sort by map.values
   var mapSort = new Map([...map.entries()].sort((a, b) => {return b[1] - a[1]; }));
-  // var mapSort = new Map([...map.entries()].sort((a, b) => {return map[b] - map[a]; }));
   let leftCnt = size;
-  // let maxset = new Set();//update max set
-  let gruopNums = size;
-  if(groupSize >= 2){
-    gruopNums = Math.ceil(size / groupSize + 1)
-  }
+
   let group_result = []
   let delete_set = new Set();
   let total_tank = 0;
   let maxlist = [];
   while (leftCnt >= groupSize){
     let max = 0;
-    // for (let [key, value] of map.entries()){
     for (let [key, value] of mapSort){
-      console.log('key: ' + key  + "\n");
+      // console.log('key: ' + key  + "\n");
       var pass = false;
       for( let k of key){
-        console.log('k: ' + k + "\n");
         if (delete_set.has(k)){
           pass= true;
           break;
@@ -529,7 +521,6 @@ function findGroup(map){
     if(maxlist != null && maxlist.length != 0){
       group_result.push([...maxlist]);
       leftCnt = leftCnt - groupSize;
-      // add maxlist to delete_set
       maxlist.forEach(delete_set.add, delete_set)
       maxlist = []
     }
