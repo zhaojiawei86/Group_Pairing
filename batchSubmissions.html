@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Pairing</title>
+  </head>
+  <body id="body" style="background-color: #062f4f; color: azure; margin: 5%">
+    <div>
+      <div class="container" id="login_page" style="display: block">
+        <h1>Please Sign in to Group Pairing</h1>
+        <br /><br />
+
+        <!-- login page -->
+        <div>
+          <label for="username">Username: </label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Please enter your username"
+            style="width: 300px"
+          />
+          <br />
+          <br />
+          <label for="password">Password: </label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Please enter your password "
+            style="width: 300px"
+          />
+        </div>
+        <br />
+        <br />
+        <div id="fail_login" style="display: none">
+          <p>Incorrect Password.</p>
+        </div>
+        <br />
+        <div>
+          <input type="button" id="login" value="Login" />
+        </div>
+      </div>
+
+      <!-- Pairing page -->
+
+      <div class="container" id="pair_page" style="display: none">
+        <h1>Please input the group info</h1>
+        <br /><br />
+
+        Number of users: &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="number" value="5" id="numOfUser" />
+        <br /><br />
+
+        Group Size:
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="number" value="2" id="groupSize" />
+        <br /><br />
+
+        Maximum Ranking:
+        <input type="number" value="100" id="maxRank" />
+        <br /><br />
+
+        Sum Ranking: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="number" value="100" id="sumRank" />
+        <br /><br />
+        <br /><br />
+        <input type="button" value="Create Rank Table" id="creat" />
+        <br /><br />
+      </div>
+
+      <!-- Ranking page -->
+
+        <div class="container" id="rank_page" style="display: none">
+          <h1>Please input ranking information</h1>
+          <div id="box"></div>
+          <br /><br />
+
+          <div>
+            <input type="button" id="submit" value="Submit" />
+            <br /><br />
+            <input type="button" id="getResult" value="Get Result" />
+          </div>
+          <br />
+
+          <div>
+            <label for="response" class="response">Return</label>
+            <textarea
+                    disabled
+                    id="response"
+                    rows="6"
+            ></textarea>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="index.js"></script>
+</html>
+
+<!-- https://blog.csdn.net/weixin_43405300/article/details/118102657?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-118102657-blog-118212109.pc_relevant_3mothn_strategy_recovery&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-118102657-blog-118212109.pc_relevant_3mothn_strategy_recovery&utm_relevant_index=2 -->
