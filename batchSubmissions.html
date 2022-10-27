@@ -27,7 +27,7 @@
           <input
             type="password"
             id="password"
-            placeholder="Please enter your password "
+            placeholder="Please enter your password"
             style="width: 300px"
           />
         </div>
@@ -70,29 +70,24 @@
       </div>
 
       <!-- Ranking page -->
-
+      <div>
         <div class="container" id="rank_page" style="display: none">
-          <h1>Please input ranking information</h1>
+          <h1>Please input the Rank info</h1>
           <div id="box"></div>
           <br /><br />
 
           <div>
             <input type="button" id="submit" value="Submit" />
             <br /><br />
-            <input type="button" id="getResult" value="Get Result" />
+            <input type="button" id="getResult" value="Get Result" disabled />
           </div>
           <br />
-
-          <div>
-            <label for="response" class="response">Return</label>
-            <textarea
-                    disabled
-                    id="response"
-                    rows="6"
-            ></textarea>
-          </div>
-
         </div>
+      </div>
+
+      <div class="container" id="response_page" style="display: none">
+        <h1>Ranking Result</h1>
+        <textarea disabled id="response" rows="10"></textarea>
       </div>
     </div>
   </body>
